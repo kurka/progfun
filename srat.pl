@@ -21,7 +21,7 @@
 %    (D) 4
 %    (E) 5
 
-q1(a).
+%q1(a).
 q1(b) :- q2(b).
 q1(c) :- q3(b).
 q1(d) :- q4(b).
@@ -270,7 +270,7 @@ q18(a) :- all_but_q18(L), count(a, L, 0, As), count(b, L, 0, Os), As == Os.
 q18(b) :- all_but_q18(L), count(a, L, 0, As), count(c, L, 0, Os), As == Os.
 q18(c) :- all_but_q18(L), count(a, L, 0, As), count(d, L, 0, Os), As == Os.
 q18(d) :- all_but_q18(L), count(a, L, 0, As), count(e, L, 0, Os), As == Os.
-q18(e) :- all_but_q18(L), count(a, L, 0, As), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), count(e, L, 0, es),
+q18(e) :- all_but_q18(L), count(a, L, 0, As), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), count(e, L, 0, Es),
 As \= Bs, As \= Cs, As \= Ds, As \= Es.
 
 
