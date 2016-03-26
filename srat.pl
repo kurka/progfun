@@ -1,18 +1,16 @@
 %SELF-REFERENTIAL APTITUDE TEST, by Jim Propp (jimpropp at gmaildotcom)
 %
-%The solution to the following puzzle is unique; in some cases the 
-%knowledge that the solution is unique may actually give you a short-cut 
-%to finding the answer to a particular question.  (Thanks to Andy Latto 
+%The solution to the following puzzle is unique; in some cases the
+%knowledge that the solution is unique may actually give you a short-cut
+%to finding the answer to a particular question.  (Thanks to Andy Latto
   %for bringing this subtlety to my attention.)
 %
-%I should mention that if you don't agree with me about the answer to #20, 
-%you will get a different solution to the puzzle than the one I had in mind.  
-%But I should also mention that if you don't agree with me about the answer 
+%I should mention that if you don't agree with me about the answer to #20,
+%you will get a different solution to the puzzle than the one I had in mind.
+%But I should also mention that if you don't agree with me about the answer
 %to #20, you are just plain wrong.  :-)
 %
 %You may now begin work.
-
-
 
 % 1. The first question whose answer is B is question
 %    (A) 1
@@ -21,11 +19,12 @@
 %    (D) 4
 %    (E) 5
 
-%q1(a).
-q1(b) :- q2(b).
-q1(c) :- q3(b).
-q1(d) :- q4(b).
-q1(e) :- q5(b).
+%q1(a/b, _, _, _, _).
+q1(b, b, _, _, _).
+q1(c, _, b, _, _).
+q1(d, _, _, b, _).
+q1(e, _, _, _, b).
+
 
 % 2. The only two consecutive questions with identical answers are questions
 %    (A) 6 and 7
@@ -33,13 +32,36 @@ q1(e) :- q5(b).
 %    (C) 8 and 9
 %    (D) 9 and 10
 %    (E) 10 and 11
-
-q2(a) :- q6(X), q7(X).
-q2(b) :- q7(X), q8(X).
-q2(c) :- q8(X), q9(X).
-q2(d) :- q9(X), q10(X).
-q2(e) :- q10(X), q11(X).
-
+%q2(a, X, X, _, _, _, _).
+q2(a, a, a, _, _, _, _).
+q2(a, b, b, _, _, _, _).
+q2(a, c, c, _, _, _, _).
+q2(a, d, d, _, _, _, _).
+q2(a, e, e, _, _, _, _).
+%q2(b, _, X, X, _, _, _).
+q2(b, _, a, a, _, _, _).
+q2(b, _, b, b, _, _, _).
+q2(b, _, c, c, _, _, _).
+q2(b, _, d, d, _, _, _).
+q2(b, _, e, e, _, _, _).
+%q2(c, _, _, X, X, _, _).
+q2(c, _, _, a, a, _, _).
+q2(c, _, _, b, b, _, _).
+q2(c, _, _, c, c, _, _).
+q2(c, _, _, d, d, _, _).
+q2(c, _, _, e, e, _, _).
+%q2(d, _, _, _, X, X, _).
+q2(d, _, _, _, a, a, _).
+q2(d, _, _, _, b, b, _).
+q2(d, _, _, _, c, c, _).
+q2(d, _, _, _, d, d, _).
+q2(d, _, _, _, e, e, _).
+%q2(e, _, _, _, _, X, X).
+q2(e, _, _, _, _, a, a).
+q2(e, _, _, _, _, b, b).
+q2(e, _, _, _, _, c, c).
+q2(e, _, _, _, _, d, d).
+q2(e, _, _, _, _, e, e).
 
 % 3. The number of questions with the answer E is
 %    (A) 0
@@ -47,12 +69,11 @@ q2(e) :- q10(X), q11(X).
 %    (C) 2
 %    (D) 3
 %    (E) 4
-
-q3(a) :- all_but_q3(L), count(e, L, 0, 0).
-q3(b) :- all_but_q3(L), count(e, L, 0, 1).
-q3(c) :- all_but_q3(L), count(e, L, 0, 2).
-q3(d) :- all_but_q3(L), count(e, L, 0, 3).
-q3(e) :- all_but_q3(L), count(e, L, 0, 3). %count itself
+q3(a, L) :- count(e, L, 0).
+q3(b, L) :- count(e, L, 1).
+q3(c, L) :- count(e, L, 2).
+q3(d, L) :- count(e, L, 3).
+q3(e, L) :- count(e, L, 4).
 
 % 4. The number of questions with the answer A is
 %    (A) 4
@@ -60,12 +81,11 @@ q3(e) :- all_but_q3(L), count(e, L, 0, 3). %count itself
 %    (C) 6
 %    (D) 7
 %    (E) 8
-
-q4(a) :- all_but_q4(L), count(a, L, 0, 3).
-q4(b) :- all_but_q4(L), count(a, L, 0, 5).
-q4(c) :- all_but_q4(L), count(a, L, 0, 6).
-q4(d) :- all_but_q4(L), count(a, L, 0, 7).
-q4(e) :- all_but_q4(L), count(a, L, 0, 8).
+q4(a, L):- count(a, L, 4).
+q4(b, L):- count(a, L, 5).
+q4(c, L):- count(a, L, 6).
+q4(d, L):- count(a, L, 7).
+q4(e, L):- count(a, L, 8).
 
 % 5. The answer to this question is the same as the answer to question
 %    (A) 1
@@ -73,26 +93,24 @@ q4(e) :- all_but_q4(L), count(a, L, 0, 8).
 %    (C) 3
 %    (D) 4
 %    (E) 5
+q5(a, a, _, _, _).
+q5(b, _, b, _, _).
+q5(c, _, _, c, _).
+q5(d, _, _, _, d).
+q5(e, _, _, _, _).
 
-q5(a) :- q1(a).
-q5(b) :- q2(b).
-q5(c) :- q3(c).
-q5(d) :- q4(d).
-q5(e).
-
-% 6. The answer to question 17 is 
+% 6. The answer to question 17 is
 %    (A) C
 %    (B) D
 %    (C) E
 %    (D) none of the above
 %    (E) all of the above
-
-q6(a) :- q17(c).
-q6(b) :- q17(d).
-q6(c) :- q17(e).
-q6(d) :- q17(a).
-q6(d) :- q17(b).
-%q6(e). - impossible?
+q6(a, c).
+q6(b, d).
+q6(c, e).
+q6(d, a).
+q6(d, b).
+%q6(e, ?). - impossible?
 
 % 7. Alphabetically, the answer to this question and the answer to the
 %    following question are
@@ -101,14 +119,13 @@ q6(d) :- q17(b).
 %    (C) 2 apart
 %    (D) 1 apart
 %    (E) the same
-
-q7(a) :- q8(e).
-q7(b) :- q8(e).
-q7(c) :- q8(a).
-q7(c) :- q8(e).
-q7(d) :- q8(c).
-q7(d) :- q8(e).
-q7(e) :- q8(e).
+q7(a, e).
+q7(b, e).
+q7(c, a).
+q7(c, e).
+q7(d, c).
+q7(d, e).
+q7(e, e).
 
 % 8. The number of questions whose answers are vowels is
 %    (A) 4
@@ -116,12 +133,11 @@ q7(e) :- q8(e).
 %    (C) 6
 %    (D) 7
 %    (E) 8
-
-q8(a) :- all_but_q8(L), count(a, L, 0, As), count(e, L, 0, Es),  VWs is As+Es, VWs == 3.
-q8(b) :- all_but_q8(L), count(a, L, 0, As), count(e, L, 0, Es),  VWs is As+Es, VWs == 5.
-q8(c) :- all_but_q8(L), count(a, L, 0, As), count(e, L, 0, Es),  VWs is As+Es, VWs == 6.
-q8(d) :- all_but_q8(L), count(a, L, 0, As), count(e, L, 0, Es),  VWs is As+Es, VWs == 7.
-q8(e) :- all_but_q8(L), count(a, L, 0, As), count(e, L, 0, Es),  VWs is As+Es, VWs == 7.
+q8(a, L) :- count(a, L, As), count(e, L, Es),  VWs is As+Es, VWs == 3.
+q8(b, L) :- count(a, L, As), count(e, L, Es),  VWs is As+Es, VWs == 5.
+q8(c, L) :- count(a, L, As), count(e, L, Es),  VWs is As+Es, VWs == 6.
+q8(d, L) :- count(a, L, As), count(e, L, Es),  VWs is As+Es, VWs == 7.
+q8(e, L) :- count(a, L, As), count(e, L, Es),  VWs is As+Es, VWs == 7.
 
 
 % 9. The next question with the same answer as this one is question
@@ -130,12 +146,11 @@ q8(e) :- all_but_q8(L), count(a, L, 0, As), count(e, L, 0, Es),  VWs is As+Es, V
 %    (C) 12
 %    (D) 13
 %    (E) 14
-
-q9(a) :- q10(a).
-q9(b) :- q11(b).
-q9(c) :- q12(c).
-q9(d) :- q13(d).
-q9(e) :- q14(e).
+q9(a, a, _, _, _, _).
+q9(b, _, b, _, _, _).
+q9(c, _, _, c, _, _).
+q9(d, _, _, _, d, _).
+q9(e, _, _, _, _, e).
 
 
 %10. The answer to question 16 is
@@ -144,12 +159,11 @@ q9(e) :- q14(e).
 %    (C) E
 %    (D) B
 %    (E) C
-
-q10(a) :- q16(d).
-q10(b) :- q16(a).
-q10(c) :- q16(e).
-q10(d) :- q16(b).
-q10(e) :- q16(c).
+q10(a, d).
+q10(b, a).
+q10(c, e).
+q10(d, b).
+q10(e, c).
 
 %11. The number of questions preceding this one with the answer B is
 %    (A) 0
@@ -157,12 +171,11 @@ q10(e) :- q16(c).
 %    (C) 2
 %    (D) 3
 %    (E) 4
-
-q11(a) :- all_before_q11(L), count(b, L, 0, 0).
-q11(b) :- all_before_q11(L), count(b, L, 0, 1).
-q11(c) :- all_before_q11(L), count(b, L, 0, 2).
-q11(d) :- all_before_q11(L), count(b, L, 0, 3).
-q11(e) :- all_before_q11(L), count(b, L, 0, 4).
+q11(a, F10) :- count(b, F10, 0).
+q11(b, F10) :- count(b, F10, 1).
+q11(c, F10) :- count(b, F10, 2).
+q11(d, F10) :- count(b, F10, 3).
+q11(e, F10) :- count(b, F10, 4).
 
 
 %12. The number of questions whose answer is a consonant is
@@ -171,26 +184,24 @@ q11(e) :- all_before_q11(L), count(b, L, 0, 4).
 %    (C) a perfect square
 %    (D) a prime
 %    (E) divisible by 5
-
-q12(a) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds) mod 2, CSs == 1.
-q12(b) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds) mod 2, CSs == 1.
+q12(a, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds) mod 2, CSs == 0.
+q12(b, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds) mod 2, CSs == 1.
 %perfect squares below 20: 1,4,9,16
-q12(c) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 0.
-q12(c) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 3.
-q12(c) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 8.
-q12(c) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 15.
+q12(c, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 1.
+q12(c, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 4.
+q12(c, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 9.
+q12(c, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 16.
 %primes below 20: 1,2,3,5,7,11,13,17,19
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 0.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 1.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 2.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 4.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 6.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 10.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 12.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 16.
-q12(d) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds), CSs == 18.
-q12(e) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), CSs is (Bs+Cs+Ds) mod 5, CSs == 0.
-
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 1.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 2.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 3.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 5.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 7.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 11.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 13.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 17.
+q12(d, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds), CSs == 19.
+q12(e, L) :- count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), CSs is (Bs+Cs+Ds) mod 5, CSs == 0.
 
 %13. The only odd-numbered problem with answer A is
 %    (A) 9
@@ -198,12 +209,12 @@ q12(e) :- all_but_q12(L), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0,
 %    (C) 13
 %    (D) 15
 %    (E) 17
+q13(a, a, _, _, _).
+q13(b, _, a, _, _).
+%q13(c/a, _, _, _, _). - contradiction!
+q13(e, _, _, a, _).
+q13(d, _, _, _, a).
 
-q13(a) :- q9(a).
-q13(b) :- q11(a).
-%q13(c) :- q13(a). - contradiction!
-q13(d) :- q15(a).
-q13(e) :- q17(a).
 
 %14. The number of questions with answer D is
 %    (A) 6
@@ -211,12 +222,12 @@ q13(e) :- q17(a).
 %    (C) 8
 %    (D) 9
 %    (E) 10
-
-q14(a) :- all_but_q14(L), count(d, L, 0, 6).
-q14(b) :- all_but_q14(L), count(d, L, 0, 7).
-q14(c) :- all_but_q14(L), count(d, L, 0, 8).
-q14(d) :- all_but_q14(L), count(d, L, 0, 8). %count itself
-q14(e) :- all_but_q14(L), count(d, L, 0, 10).
+%q14(Q14, L),
+q14(a, L) :- count(d, L, 6).
+q14(b, L) :- count(d, L, 7).
+q14(c, L) :- count(d, L, 8).
+q14(d, L) :- count(d, L, 9).
+q14(e, L) :- count(d, L, 10).
 
 %15. The answer to question 12 is
 %    (A) A
@@ -224,12 +235,11 @@ q14(e) :- all_but_q14(L), count(d, L, 0, 10).
 %    (C) C
 %    (D) D
 %    (E) E
-
-q15(a) :- q12(a).
-q15(b) :- q12(b).
-q15(c) :- q12(c).
-q15(d) :- q12(d).
-q15(e) :- q12(e).
+q15(a, a).
+q15(b, b).
+q15(c, c).
+q15(d, d).
+q15(e, e).
 
 %16. The answer to question 10 is
 %    (A) D
@@ -237,12 +247,11 @@ q15(e) :- q12(e).
 %    (C) B
 %    (D) A
 %    (E) E
-
-q16(a) :- q10(d).
-q16(b) :- q10(c).
-q16(c) :- q10(b).
-q16(d) :- q10(a).
-q16(e) :- q10(e).
+q16(a, d).
+q16(b, c).
+q16(c, b).
+q16(d, a).
+q16(e, e).
 
 %17. The answer to question 6 is
 %    (A) C
@@ -250,42 +259,39 @@ q16(e) :- q10(e).
 %    (C) E
 %    (D) none of the above
 %    (E) all of the above
-
-q17(a) :- q6(c).
-q17(b) :- q6(d).
-q17(c) :- q6(e).
-q17(d) :- q6(a).
-q17(d) :- q6(b).
+q17(a, c).
+q17(b, d).
+q17(c, e).
+q17(d, a).
+q17(d, b).
 %q17(e) :- q6(e). - impossible?
 
-%18. The number of questions with answer A equals the number of questions 
+%18. The number of questions with answer A equals the number of questions
 %    with answer
 %    (A) B
 %    (B) C
 %    (C) D
 %    (D) E
 %    (E) none of the above
+q18(a, L) :- count(a, L, As), count(b, L, Os), As == Os.
+q18(b, L) :- count(a, L, As), count(c, L, Os), As == Os.
+q18(c, L) :- count(a, L, As), count(d, L, Os), As == Os.
+q18(d, L) :- count(a, L, As), count(e, L, Os), As == Os.
+q18(e, L) :- count(a, L, As), count(b, L, Bs), count(c, L, Cs), count(d, L, Ds), count(e, L, Es),
+As \== Bs, As \== Cs, As \== Ds, As \== Es.
 
-q18(a) :- all_but_q18(L), count(a, L, 0, As), count(b, L, 0, Os), As == Os.
-q18(b) :- all_but_q18(L), count(a, L, 0, As), count(c, L, 0, Os), As == Os.
-q18(c) :- all_but_q18(L), count(a, L, 0, As), count(d, L, 0, Os), As == Os.
-q18(d) :- all_but_q18(L), count(a, L, 0, As), count(e, L, 0, Os), As == Os.
-q18(e) :- all_but_q18(L), count(a, L, 0, As), count(b, L, 0, Bs), count(c, L, 0, Cs), count(d, L, 0, Ds), count(e, L, 0, Es),
-As \= Bs, As \= Cs, As \= Ds, As \= Es.
 
-
-    %19. The answer to this question is:
-    %    (A) A
-    %    (B) B
-    %    (C) C
-    %    (D) D
-    %    (E) E
-
-    q19(a).
-  q19(b).
+%19. The answer to this question is:
+%    (A) A
+%    (B) B
+%    (C) C
+%    (D) D
+%    (E) E
+q19(a).
+q19(b).
 q19(c).
-    q19(d).
-  q19(e).
+q19(d).
+q19(e).
 
 %20. Standardized test is to intelligence as barometer is to
 %    (A) temperature (only)
@@ -293,42 +299,65 @@ q19(c).
 %    (C) latitude (only)
 %    (D) longitude (only)
 %    (E) temperature, wind-velocity, latitude, and longitude
-
+% q20(a).
+% q20(b).
+% q20(c).
+% q20(d).
 q20(e).
 
 %aux functions:
-count(E, [E|T], Acc, Total) :- 
-  Acc2 is Acc + 1,
-  count(E, T, Acc2, Total).
+count(E, [E|T], Total) :-
+    count(E, T, PTotal),
+    Total is PTotal + 1.
 
-count(E, [H|T], Acc, Total) :- 
-  H \= E,
-  count(E, T, Acc, Total).
+count(E, [H|T], Total) :-
+    dif(H, E), %%H \= E,
+    count(E, T, Total).
 
-count(_, [], Acc, Acc).
-
-
-all_but_q3([Q1,Q2,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20]):-
-  q1(Q1),q2(Q2),q4(Q4),q5(Q5),q6(Q6),q7(Q7),q8(Q8),q9(Q9),q10(Q10),q11(Q11),q12(Q12),q13(Q13),q14(Q14),q15(Q15),q16(Q16),q17(Q17),q18(Q18),q19(Q19),q20(Q20).
-
-all_but_q4([Q1,Q2,Q3,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20]):-
-  q1(Q1),q2(Q2),q3(Q3),q5(Q5),q6(Q6),q7(Q7),q8(Q8),q9(Q9),q10(Q10),q11(Q11),q12(Q12),q13(Q13),q14(Q14),q15(Q15),q16(Q16),q17(Q17),q18(Q18),q19(Q19),q20(Q20).
-
-all_but_q8([Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20]):-
-  q1(Q1),q2(Q2),q3(Q3),q4(Q4),q5(Q5),q6(Q6),q7(Q7),q9(Q9),q10(Q10),q11(Q11),q12(Q12),q13(Q13),q14(Q14),q15(Q15),q16(Q16),q17(Q17),q18(Q18),q19(Q19),q20(Q20).
-
-all_but_q12([Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20]):-
-  q1(Q1),q2(Q2),q3(Q3),q4(Q4),q5(Q5),q6(Q6),q7(Q7),q8(Q8),q9(Q9),q10(Q10),q11(Q11),q13(Q13),q14(Q14),q15(Q15),q16(Q16),q17(Q17),q18(Q18),q19(Q19),q20(Q20).
-
-all_but_q14([Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q15,Q16,Q17,Q18,Q19,Q20]):-
-  q1(Q1),q2(Q2),q3(Q3),q4(Q4),q5(Q5),q6(Q6),q7(Q7),q8(Q8),q9(Q9),q10(Q10),q11(Q11),q12(Q12),q13(Q13),q15(Q15),q16(Q16),q17(Q17),q18(Q18),q19(Q19),q20(Q20).
-
-all_but_q18([Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q19,Q20]):-
-  q1(Q1),q2(Q2),q3(Q3),q4(Q4),q5(Q5),q6(Q6),q7(Q7),q8(Q8),q9(Q9),q10(Q10),q11(Q11),q12(Q12),q13(Q13),q14(Q14),q15(Q15),q16(Q16),q17(Q17),q19(Q19),q20(Q20).
-
-all_before_q11([Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10]):-
-  q1(Q1),q2(Q2),q3(Q3),q4(Q4),q5(Q5),q6(Q6),q7(Q7),q8(Q8),q9(Q9),q10(Q10).
+count(_, [], 0).
 
 all_questions([Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20]):-
-  q1(Q1),q2(Q2),q3(Q3),q4(Q4),q5(Q5),q6(Q6),q7(Q7),q8(Q8),q9(Q9),q10(Q10),q11(Q11),q12(Q12),q13(Q13),q14(Q14),q15(Q15),q16(Q16),q17(Q17),q18(Q18),q19(Q19),q20(Q20).
+  L = [Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20],
+  F10 = [Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10],
+  q1(Q1, Q2, Q3, Q4, Q5),
+  q2(Q2, Q6, Q7, Q8, Q9, Q10, Q11),
+  q3(Q3, L), %count
+  q4(Q4, L), %count
+  q5(Q5, Q1, Q2, Q3, Q4),
+  q6(Q6, Q17),
+  q7(Q7, Q8),
+  q8(Q8, L), %3 counts
+  q9(Q9, Q10, Q11, Q12, Q13, Q14),
+  q10(Q10, Q16),
+  q11(Q11, F10), %1/2 count
+  q12(Q12, L), %3 counts!
+  q13(Q13, Q9, Q11, Q15, Q17),
+  q15(Q15, Q12),
+  q16(Q16, Q10),
+  q17(Q17, Q6),
+  q18(Q18, L), %many counts (5)
+  q19(Q19),
+  q20(Q20).
 
+all_questions_faster([Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20]):-
+  L = [Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,Q16,Q17,Q18,Q19,Q20],
+  F10 = [Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10],
+  q19(Q19),
+  q20(Q20),
+  q6(Q6, Q17),
+  q7(Q7, Q8),
+  q10(Q10, Q16),
+  q17(Q17, Q6),
+  q15(Q15, Q12),
+  q16(Q16, Q10),
+  q1(Q1, Q2, Q3, Q4, Q5),
+  q5(Q5, Q1, Q2, Q3, Q4),
+  q13(Q13, Q9, Q11, Q15, Q17),
+  q2(Q2, Q6, Q7, Q8, Q9, Q10, Q11),
+  q9(Q9, Q10, Q11, Q12, Q13, Q14),
+  q11(Q11, F10), %1/2 count
+  q3(Q3, L), %count
+  q4(Q4, L), %count
+  q8(Q8, L), %3 counts
+  q12(Q12, L), %3 counts!
+  q18(Q18, L). %muitos counts (5)
