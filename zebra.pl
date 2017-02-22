@@ -122,7 +122,8 @@ house([_, _, yellow, _, kools]).
 % house([_, zebra, _, _, _]).
 
 positions(Houses, P1, P2, P3, P4, P5) :-
-    house_where_drink(Houses, milk, P3).
+    house_where_drink(Houses, milk, P3),
+    house_where_color(Houses, )
 
 house_where_drink([H|HH], D, H) :-
   H = [_, _, _, D, _].
