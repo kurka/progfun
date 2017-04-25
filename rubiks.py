@@ -5,12 +5,13 @@ import copy
 import heapq
 
 colours = ["R", "G", "B", "W", "O", "Y"]
-R = r = "R"
-G = g = "G"
-B = b = "B"
-W = w = "W"
-O = o = "O"
-Y = y = "Y"
+# long names correspond to bloomberg's rubiks cube I have at my desk
+black = R = r = "R"
+yellow = G = g = "G"
+blue = B = b = "B"
+white = W = w = "W"
+green = O = o = "O"
+pink = Y = y = "Y"
 
 
 class Cube:
@@ -20,8 +21,8 @@ class Cube:
             R: Side(R, B, Y, G, W, O),
             Y: Side(Y, B, O, G, R, W),
             O: Side(O, B, W, G, Y, R),
-            B: Side(B, W, O, Y, R, B),
-            G: Side(G, W, R, Y, O, G)
+            B: Side(B, W, O, Y, R, G),
+            G: Side(G, W, R, Y, O, B)
         }
 
     def neighbours(self):
@@ -416,7 +417,7 @@ def a_star(start, goal):
         current_score, current = heapq.heappop(openheap)#min(openset, key=lambda x: f_score[x])
         if not iterations % 1024:
             print("Already visited {} states, current_score: {}".format(iterations, current_score))
-        print(current_score)
+        # print(current_score)
         if current == goal:
             print("Found the solution after visiting {} states!".format(iterations))
             return reconstruct_path(came_from, goal)
@@ -434,7 +435,7 @@ def a_star(start, goal):
                 g_score[neighbour] = t_g_score
                 f_score = (g_score[neighbour] +
                                       state_to_cube(neighbour).get_distance()) #FIXME: quando t_g_score < g_score, nao grava o resultado (certo?)
-                print("Father: {}, son: {}, f: {}".format(current_score, f_score, f_score-g_score[neighbour]))
+                # print("Father: {}, son: {}, f: {}".format(current_score, f_score, f_score-g_score[neighbour]))
                 if neighbour not in openset:
                     openset.add(neighbour)
                     heapq.heappush(openheap, (f_score, neighbour))
@@ -460,22 +461,26 @@ def state_to_cube(state):
     return cube
 
 
-# cube = {
-#     W: Side(W, B, R, G, O),
-#     R: Side(R, B, Y, G, W),
-#     Y: Side(Y, B, O, G, R),
-#     O: Side(O, B, W, G, Y),
-#     B: Side(B, W, O, Y, R),
-#     G: Side(G, W, R, Y, O)
-# }
+# W: Side(W, B, R, G, O, Y),
+# R: Side(R, B, Y, G, W, O),
+# Y: Side(Y, B, O, G, R, W),
+# O: Side(O, B, W, G, Y, R),
+# B: Side(B, W, O, Y, R, G),
+# G: Side(G, W, R, Y, O, B)
 if __name__ == '__main__':
     cube = Cube()
-    cube.sides[w].read_side([w, y, y, w, w, w, w, o, g])
-    cube.sides[r].read_side([o, o, y, b, r, r, w, w, y])
-    cube.sides[y].read_side([g, w, w, y, y, g, r, r, g])
-    cube.sides[o].read_side([r, b, o, y, o, o, r, r, o])
-    cube.sides[b].read_side([b, o, b, b, b, y, o, g, b])
-    cube.sides[g].read_side([g, g, r, g, g, r, y, b, b])
+    #w = white
+    #r = black
+    #y = pink
+    #o = green
+    #b = blue
+    #g = yellow
+    cube.sides[w].read_side([white, white, white, white, white, white, white, white, white])
+    cube.sides[r].read_side([black, pink, green, black, black, green, black, black, blue])
+    cube.sides[y].read_side([pink, green, pink, yellow, pink, pink, green, black, yellow])
+    cube.sides[o].read_side([blue, black, green, blue, green, green, black, pink, green])
+    cube.sides[b].read_side([blue, blue, blue, yellow, blue, blue, yellow, blue, black])
+    cube.sides[g].read_side([yellow, yellow, yellow, green, yellow, pink, pink, yellow, pink])
 
     # cube.sides[w].read_side([b, b, b, b, w, b, b, b, b])
     # cube.sides[r].read_side([w, w, w, w, r, w, w, w, w])
@@ -502,6 +507,7 @@ if __name__ == '__main__':
     goal_cube.sides[g].read_side([g, g, g, g, g, g, g, g, g])
 
     print(cube.to_state())
+    cube.print_cube()
 
     import ipdb; ipdb.set_trace()
 
