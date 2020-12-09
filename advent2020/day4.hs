@@ -36,8 +36,8 @@ parseAny = some (alphaNumChar <|> oneOf ['#', ':'])
 parseNumber :: Parser Int
 parseNumber = decimal <* notFollowedBy (satisfy isAlpha)
 
-parseHgt :: Parser (Int, String)
-parseHgt = (,) <$> decimal <*> ("in" <|> "cm")
+endHere :: Parser ()
+endHere = notFollowedBy (satisfy isAlphaNum)
 
 validateHgt :: (Int, String) -> Bool
 validateHgt (height, unit) = case unit of
@@ -52,16 +52,21 @@ parseAndValidate parser validator = try right <|> left
     right = parser >>= \res -> guard (validator res) >> return (Right res)
     left = Left <$> parseAny
 
+parseEither :: Parser a -> Parser (Value a)
+parseEither rightParser = try (Right <$> rightParser) <|> Left <$> parseAny
+
+
+
 fieldParser :: Parser Field
 fieldParser = choice
-  [ Byr <$> ("byr:" *> parseAndValidate parseNumber (1920 <=> 2002)),
-    Iyr <$> ("iyr:" *> parseAndValidate parseNumber (2010 <=> 2020)),
-    Eyr <$> ("eyr:" *> parseAndValidate parseNumber (2020 <=> 2030)),
-    Hgt <$> ("hgt:" *> parseAndValidate parseHgt validateHgt),
-    Hcl <$> ("hcl:" *> parseAndValidate ("#" *> some (satisfy isHexDigit)) ((6==) . length)),
-    Ecl <$> ("ecl:" *> parseAndValidate (some (satisfy isAlpha)) (\e -> elem e $ words "amb blu brn gry grn hzl oth")),
-    Pid <$> ("pid:" *> parseAndValidate (some (satisfy isDigit)) ((9==) . length)),
-    Cid <$> ("cid:" *> parseAndValidate parseAny (const True))
+  [ Byr <$> ("byr:" *> parseEither parseNumber),-- (1920 <=> 2002)),
+    Iyr <$> ("iyr:" *> parseEither parseNumber),-- (2010 <=> 2020)),
+    Eyr <$> ("eyr:" *> parseEither parseNumber),-- (2020 <=> 2030)),
+    Hgt <$> ("hgt:" *> parseEither ((,) <$> decimal <*> ("in" <|> "cm"))),-- validateHgt),
+    Hcl <$> ("hcl:" *> parseEither ("#" *> count 6 (satisfy isHexDigit) <* endHere)),-- ((6==) . length)),
+    Ecl <$> ("ecl:" *> parseEither (count 3 (satisfy isAlpha) <* endHere)),-- (\e -> elem e $ words "amb blu brn gry grn hzl oth")),
+    Pid <$> ("pid:" *> parseEither (count 9 (satisfy isDigit) <* endHere)),-- ((9==) . length)),
+    Cid <$> ("cid:" *> parseEither parseAny)-- (const True))
   ]
 
 
@@ -85,12 +90,14 @@ solveB :: Either a [Passport] -> Int
 solveB (Right pwds) = length $ filter isValid pwds
   where
     isValid = (7 ==) . length . filter isValidField
-    isValidField (Byr (Right _)) = True
-    isValidField (Iyr (Right _)) = True
-    isValidField (Eyr (Right _)) = True
-    isValidField (Hgt (Right _)) = True
+    isValidField (Byr (Right y)) = (1920 <=> 2002) y
+    isValidField (Iyr (Right y)) = (2010 <=> 2020) y
+    isValidField (Eyr (Right y)) = (2020 <=> 2030) y
+    isValidField (Hgt (Right (h, u))) = case u of
+      "cm" -> (150 <=> 193) h
+      "in" -> (59 <=> 76) h
     isValidField (Hcl (Right _)) = True
-    isValidField (Ecl (Right _)) = True
+    isValidField (Ecl (Right e)) = elem e ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
     isValidField (Pid (Right _)) = True
     isValidField (Cid (Right _)) = True
     isValidField _ = False
@@ -104,3 +111,4 @@ main = do
   print . solveA $ passports
   print . solveB $ passports
   print passports
+ 
