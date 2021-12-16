@@ -106,6 +106,10 @@ func solve4(draws []int, cards []*CardData, partB bool) (firstWinner, lastWinner
 
 func main() {
 	draws, cards := readinput4()
+	// stress test
+	for i := 0; i < 100000; i++ {
+		solve4(draws, cards, true)
+	}
 	solA, solB := solve4(draws, cards, true)
 	fmt.Println(solA)
 	fmt.Println(solB)
