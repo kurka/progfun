@@ -9,18 +9,14 @@ import (
 
 const CardSize = 5
 
-type Card = [CardSize][CardSize]int
-
 type Coordinate struct {
 	row, column int
 }
 
+// we just need to store unmarked numbers and the count of marked ones per row and column
 type CardData struct {
-	card           Card
-	marked         map[int]Coordinate
-	unmarked       map[int]Coordinate
-	rowsCounter    [CardSize]int
-	columnsCounter [CardSize]int
+	unmarked           map[int]Coordinate // store numbers not drawn and their coordinates
+	rowsColumnsCounter [CardSize * 2]int // counts how many hits each row and column had
 }
 
 func readinput4() (draws []int, cards []CardData) {
@@ -34,56 +30,85 @@ func readinput4() (draws []int, cards []CardData) {
 	}
 
 	// then read the cards
-CardLoop:
+ReadCardLoop:
 	for {
-		var card Card
 		unmarked := make(map[int]Coordinate, CardSize*CardSize)
 		var card_value int
 		for i := 0; i < CardSize; i++ {
 			for j := 0; j < CardSize; j++ {
 				_, err := fmt.Scan(&card_value)
 				if err == io.EOF {
-					break CardLoop
+					break ReadCardLoop
 				}
-				card[i][j] = card_value
 				unmarked[card_value] = Coordinate{i, j}
 			}
 		}
-		cardData := CardData{card, map[int]Coordinate{}, unmarked, [CardSize]int{}, [CardSize]int{}}
+		cardData := CardData{unmarked, [CardSize * 2]int{}}
 		cards = append(cards, cardData)
 	}
 
 	return
 }
 
-func solve4a(draws []int, cards *[]CardData) (result int) {
+
+// O(mn) solution, where m is the number of numbers drawn, and n the number of cards
+// returns both solutions in a same function run
+func solve4(draws []int, cards []CardData, partB bool) (firstWinner, lastWinner int) {
+
+	firstWinnerIsKnown := false
 
 	for _, draw := range draws {
-		for card_i := range *cards {
-			card := &(*cards)[card_i]
-			if coords, ok := card.unmarked[draw]; ok {
+		var next_round_cards = []CardData{} // store the cards that will be used in next round
+		for card_i := range cards {
+			card := &cards[card_i]
+			bingo := false
+			// fill cards and check for bingo
+			if coords, isUnmarked := card.unmarked[draw]; isUnmarked {
 				delete(card.unmarked, draw)
-				card.marked[draw] = coords
-				card.rowsCounter[coords.row] += 1
-				card.columnsCounter[coords.column] += 1
+				// increment row and column counters
+				card.rowsColumnsCounter[coords.row] += 1
+				card.rowsColumnsCounter[CardSize+coords.column] += 1
+
+				if card.rowsColumnsCounter[coords.row] == CardSize || card.rowsColumnsCounter[CardSize+coords.column] == CardSize {
+					// bingo!
+					bingo = true
+				}
 			}
-			for i := range card.rowsCounter {
-				if card.rowsCounter[i] == CardSize || card.columnsCounter[i] == CardSize {
+
+			// deal with winning (and losing) cards
+			if bingo {
+				if !firstWinnerIsKnown || len(cards) == 1 {
+					// compute final sum and return
 					unmarked_sum := 0
 					for unmarked := range card.unmarked {
 						unmarked_sum += unmarked
 					}
-					result = unmarked_sum * draw
-					return result
+					result := unmarked_sum * draw
+					// check if this result is for the first or last winner
+					if !firstWinnerIsKnown {
+						firstWinnerIsKnown = true
+						firstWinner = result
+					} else {
+						lastWinner = result
+						return
+					}
 				}
+			} else {
+				// as a bing didn't happen, keep card to the next round
+				// TODO: not sure if creating a new list in this way is
+				// efficient. Are we creating copies of the struct every time?
+				// Is there a solution with slices, or copying by reference?
+				next_round_cards = append(next_round_cards, cards[card_i])
 			}
 		}
+		cards = next_round_cards
 	}
-	return result
-
+	return
 }
 
 func main() {
 	draws, cards := readinput4()
-	fmt.Println(solve4a(draws, &cards))
+	solA, solB := solve4(draws, cards, true)
+	fmt.Println(solA)
+	fmt.Println(solB)
 }
