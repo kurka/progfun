@@ -19,7 +19,7 @@ type CardData struct {
 	rowsColumnsCounter [CardSize * 2]int // counts how many hits each row and column had
 }
 
-func readinput4() (draws []int, cards []CardData) {
+func readinput4() (draws []int, cards []*CardData) {
 	var draws_string string
 	// first read the list of draws
 	fmt.Scan(&draws_string)
@@ -44,7 +44,7 @@ ReadCardLoop:
 			}
 		}
 		cardData := CardData{unmarked, [CardSize * 2]int{}}
-		cards = append(cards, cardData)
+		cards = append(cards, &cardData)
 	}
 
 	return
@@ -53,14 +53,14 @@ ReadCardLoop:
 
 // O(mn) solution, where m is the number of numbers drawn, and n the number of cards
 // returns both solutions in a same function run
-func solve4(draws []int, cards []CardData, partB bool) (firstWinner, lastWinner int) {
+func solve4(draws []int, cards []*CardData, partB bool) (firstWinner, lastWinner int) {
 
 	firstWinnerIsKnown := false
 
 	for _, draw := range draws {
-		var next_round_cards = []CardData{} // store the cards that will be used in next round
+		var next_round_cards = []*CardData{} // store the cards that will be used in next round
 		for card_i := range cards {
-			card := &cards[card_i]
+			card := cards[card_i]
 			bingo := false
 			// fill cards and check for bingo
 			if coords, isUnmarked := card.unmarked[draw]; isUnmarked {
@@ -95,9 +95,7 @@ func solve4(draws []int, cards []CardData, partB bool) (firstWinner, lastWinner 
 				}
 			} else {
 				// as a bing didn't happen, keep card to the next round
-				// TODO: not sure if creating a new list in this way is
-				// efficient. Are we creating copies of the struct every time?
-				// Is there a solution with slices, or copying by reference?
+				// TODO: not sure if creating a new list in this way is efficient.
 				next_round_cards = append(next_round_cards, cards[card_i])
 			}
 		}
