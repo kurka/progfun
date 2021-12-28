@@ -2,21 +2,18 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"strings"
 )
 
-func readInput12() (caveMap map[string][]string){
+func readInput12() (caveMap map[string][]string) {
 	caveMap = make(map[string][]string)
-	var sourceTarget string//, source, target string
-	for {
-		_, err := fmt.Scan(&sourceTarget)
+
+	var sourceTarget string //, source, target string
+	fscan := func() (err error) { _, err = fmt.Scan(&sourceTarget); return }
+	for err := fscan(); err == nil; err = fscan() {
 		sourceTargetList := strings.Split(sourceTarget, "-")
 		source, target := sourceTargetList[0], sourceTargetList[1]
 
-		if err == io.EOF {
-			break
-		}
 		caveMap[source] = append(caveMap[source], target)
 		caveMap[target] = append(caveMap[target], source)
 	}
@@ -74,7 +71,7 @@ func validCave(path []string, cave string, simple bool) (valid bool) {
 					break
 				}
 			}
-			if ! anyTwo { // another cave was already visited twice
+			if !anyTwo { // another cave was already visited twice
 				valid = true
 			} else {
 				valid = false
@@ -87,7 +84,7 @@ func validCave(path []string, cave string, simple bool) (valid bool) {
 	return
 }
 
-func countPaths(caveMap *map[string][]string, pathTraveled []string, simple bool) (nPaths int){
+func countPaths(caveMap *map[string][]string, pathTraveled []string, simple bool) (nPaths int) {
 
 	lastCave := pathTraveled[len(pathTraveled)-1]
 	// base case
@@ -105,12 +102,11 @@ func countPaths(caveMap *map[string][]string, pathTraveled []string, simple bool
 	return
 }
 
-func solve12(caveMap map[string][]string) (nPathsA, nPathsB int){
+func solve12(caveMap map[string][]string) (nPathsA, nPathsB int) {
 	nPathsA = countPaths(&caveMap, []string{"start"}, true)
 	nPathsB = countPaths(&caveMap, []string{"start"}, false)
 	return
 }
-
 
 func main() {
 	caveMap := readInput12()
