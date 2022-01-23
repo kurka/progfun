@@ -2,91 +2,87 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
-type Coord struct {
-	x,y int
-}
-
-func readInput20() ([]rune, map[Coord]struct{}) {
+func readInput20() ([]rune, [][]int) {
 	var l string
-	grid := make(map[Coord]struct{}, 0)
 
 	// first read the algorithm line
 	fmt.Scanln(&l)
 	algorithm := []rune(l)
 
+	// then read the grid, and store it in a dense matrix
+	grid := make([][]int, 0)
 	scanLine := func() (err error) { _, err = fmt.Scan(&l); return }
 	for err, i := scanLine(), 0; err == nil; err, i = scanLine(), i+1 {
+		line := make([]int, len(l))
 		for j, c := range l {
 			if c == '#' {
-				grid[Coord{i,j}] = struct{}{}
+				line[j] = 1
 			}
 		}
+		grid = append(grid, line)
 	}
 
 	return algorithm, grid
 }
 
-func solve20(algorithm []rune, grid map[Coord]struct{}) {
-	// minX := fmt.print
-	minX, maxX, minY, maxY := math.MaxInt, math.MinInt, math.MaxInt, math.MinInt
-	for c := range grid {
-		if c.x < minX {
-			minX = c.x
-		}
-		if c.x > maxX {
-			maxX = c.x
-		}
-		if c.y < minY {
-			minY = c.y
-		}
-		if c.y > maxY {
-			maxY = c.y
-		}
-	}
+func solve20(algorithm []rune, grid [][]int) {
 
-	rounds := 2
+	var default_value int
+	rounds := 50
 	for r := 0; r < rounds; r++ {
-		nextGrid := make(map[Coord]struct{}, len(grid))
-		for i := minX-2; i <= maxX; i++ {
-			fmt.Println("done row", i, "/", maxX)
-			for j := minY-2; j <= maxY; j++ {
+
+		// define a default value for the coordinates outside the grid,
+		// depending on the value of the rule 0, and the current round
+		switch algorithm[0] {
+		case '.':
+			default_value = 0
+		case '#':
+			if r%2 == 0 { // even rounds
+				default_value = 0
+			} else { // odd rounds
+				default_value = 1
+			}
+		}
+
+		nRows := len(grid)
+		nCols := len(grid[0])
+		nextGrid := make([][]int, nRows+2)
+		for i := 0; i < nRows+2; i++ {
+			nextGrid[i] = make([]int, nCols+2)
+		}
+
+		total_on := 0
+		for i := range nextGrid {
+			for j := range nextGrid[i] {
 				// find code
 				code := 0
-				for ii := i; ii < i+3; ii++ {
-					for jj := j; jj < j+3; jj++ {
+				for ii := i - 1; ii <= i+1; ii++ {
+					for jj := j - 1; jj <= j+1; jj++ {
 						code *= 2
-						if _, ok := grid[Coord{ii, jj}]; ok {
-							code += 1
+						if ii < 1 || ii > nRows || jj < 1 || jj > nCols {
+							code += default_value
+						} else {
+							code += grid[ii-1][jj-1]
 						}
 					}
 				}
 
 				if nextChar := algorithm[code]; nextChar == '#' {
-					nextGrid[Coord{i+1,j+1}] = struct{}{}
-					if i+1 < minX {
-						minX = i+1
-					}
-					if i+1 > maxX {
-						maxX = i+1
-					}
-					if j+1 < minY {
-						minY = j+1
-					}
-					if j+1 > maxY {
-						maxY = j+1
-					}
+					nextGrid[i][j] = 1
+					total_on++
 				}
 			}
 		}
+
 		grid = nextGrid
-		fmt.Println(len(grid))
-		// fmt.Println(grid)
+
+		if r == 1 || r == 49 {
+			fmt.Println(total_on)
+		}
 
 	}
-	fmt.Println(len(grid))
 }
 
 func main() {
