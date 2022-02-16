@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"math"
 )
 
@@ -29,6 +30,33 @@ func (s State) String() string {
 		sString += "##\n"
 	}
 	return sString
+}
+
+func fromString(stateStr string) (state State) {
+	stateStrs := strings.Split(stateStr, "\n")
+	fmt.Sscanf(stateStrs[0], "#%c%c.%c.%c.%c.%c%c#",
+		&state.hallway[0],
+		&state.hallway[1],
+		&state.hallway[2],
+		&state.hallway[3],
+		&state.hallway[4],
+		&state.hallway[5],
+		&state.hallway[6])
+	nSlots := len(stateStrs)-2
+	for i := 0; i < numRooms; i++ {
+		state.rooms[i].slots = make([]rune, nSlots)
+	}
+
+	for i := 0; i < nSlots; i++ {
+		fmt.Sscanf(stateStrs[i+1],
+			"###%c#%c#%c#%c###",
+			&state.rooms[0].slots[i],
+			&state.rooms[1].slots[i],
+			&state.rooms[2].slots[i],
+			&state.rooms[3].slots[i])
+	}
+	return
+
 }
 
 func (m Move) String() string {
@@ -112,6 +140,18 @@ func minimum(list []int) (int, int) {
 		}
 	}
 	return min, minIdx
+}
+
+func minMap(aMap map[string]int) (string, int) {
+	minV := math.MaxInt
+	var minK string
+	for k, v := range aMap {
+		if v < minV {
+			minV = v
+			minK = k
+		}
+	}
+	return minK, minV
 }
 
 func isFinalState(state State) bool {
@@ -219,65 +259,116 @@ func getPossibleMoves(state State) (possibleMoves []Move) {
 	return
 }
 
-func makeMove(state *State, move Move) (cost int) {
+func makeMove(state State, move Move) (newState State, cost int) {
+	// deepcopy state into newState
+	newState = state
+	for i := range state.rooms {
+		newState.rooms[i].slots = make([]rune, len(state.rooms[i].slots))
+		copy(newState.rooms[i].slots, state.rooms[i].slots)
+	}
+
 	// change state and compute cost
 	switch move.from.ltype {
 	case 'h': // hallway -> room move
-		(*state).rooms[move.to.pos].slots[move.to.depth] = (*state).hallway[move.from.pos]
-		(*state).hallway[move.from.pos] = empty
+		newState.rooms[move.to.pos].slots[move.to.depth] = newState.hallway[move.from.pos]
+		newState.hallway[move.from.pos] = empty
 		vertDist := move.to.depth + 1
 		costPerMove := intPow(10, move.to.pos)
 		horizDist := intAbs((2 + move.to.pos*2) - hallIdx2Pos[move.from.pos])
 		cost = costPerMove * (horizDist + vertDist)
 
 	case 'r': // room -> hallway move
-		(*state).hallway[move.to.pos] = (*state).rooms[move.from.pos].slots[move.from.depth]
-		(*state).rooms[move.from.pos].slots[move.from.depth] = empty
-		costPerMove := intPow(10, int((*state).hallway[move.to.pos]-'A'))
+		newState.hallway[move.to.pos] = newState.rooms[move.from.pos].slots[move.from.depth]
+		newState.rooms[move.from.pos].slots[move.from.depth] = empty
+		costPerMove := intPow(10, int(newState.hallway[move.to.pos]-'A'))
 		vertDist := move.from.depth + 1
 		horizDist := intAbs((2 + move.from.pos*2) - hallIdx2Pos[move.to.pos])
 		cost = costPerMove * (horizDist + vertDist)
 	}
 
-	return cost
+	return
 }
 
-func searchAllPaths(state State, costSoFar int, moveChain []Move) int {
-	// fmt.Println(state)
-	if isFinalState(state) {
-		// fmt.Println("final with cost", costSoFar)
-		// fmt.Println(moveChain)
-		return costSoFar
-	}
+// func searchAllPaths(state State, costSoFar int, moveChain []Move) int {
+// 	// fmt.Println(state)
+// 	if isFinalState(state) {
+// 		// fmt.Println("final with cost", costSoFar)
+// 		// fmt.Println(moveChain)
+// 		return costSoFar
+// 	}
 
-	// freePieces := getFreePieces(state)
-	possibleMoves := getPossibleMoves(state)
-	if len(possibleMoves) == 0 {
-		// fmt.Println("dead end")
+// 	// freePieces := getFreePieces(state)
+// 	possibleMoves := getPossibleMoves(state)
+// 	if len(possibleMoves) == 0 {
+// 		// fmt.Println("dead end")
+// 		// fmt.Println(state)
+// 		return math.MaxInt
+// 	}
+
+// 	allCosts := make([]int, 0, len(possibleMoves))
+// 	for _, move := range possibleMoves {
+// 		// fmt.Println(move)
+// 		moveCost := makeMove(&state, move)
+// 		pathCost := searchAllPaths(state, costSoFar+moveCost, append(moveChain, move))
+// 		allCosts = append(allCosts, pathCost)
+// 		// undo move to return state to original value
+// 		makeMove(&state, Move{move.to, move.from})
+// 	}
+
+// 	minCost, _ := minimum(allCosts)
+// 	// fmt.Println(possibleMoves[minMoveIdx])
+// 	// fmt.Println(state)
+// 	return minCost
+// }
+
+func searchBestPath(initState State) int {
+
+	stateQueue := map[string]int{initState.String(): 0}
+
+	for len(stateQueue) > 0 {
+
+		stateStr, costSoFar := minMap(stateQueue)
+		state := fromString(stateStr)
+		// remove state from queues
+		delete(stateQueue, stateStr)
+
+		// fmt.Println(len(stateQueue))
 		// fmt.Println(state)
-		return math.MaxInt
-	}
 
-	allCosts := make([]int, 0, len(possibleMoves))
-	for _, move := range possibleMoves {
-		// fmt.Println(move)
-		moveCost := makeMove(&state, move)
-		pathCost := searchAllPaths(state, costSoFar+moveCost, append(moveChain, move))
-		allCosts = append(allCosts, pathCost)
-		// undo move to return state to original value
-		makeMove(&state, Move{move.to, move.from})
-	}
+		if isFinalState(state) {
+			// fmt.Println("final with cost", costSoFar)
+			// fmt.Println(moveChain)
+			// fmt.Println(stateQueue)
+			fmt.Println(len(stateQueue))
+			return costSoFar
+		}
 
-	minCost, _ := minimum(allCosts)
-	// fmt.Println(possibleMoves[minMoveIdx])
-	// fmt.Println(state)
-	return minCost
+		// freePieces := getFreePieces(state)
+		possibleMoves := getPossibleMoves(state)
+
+		for _, move := range possibleMoves {
+			newState, moveCost := makeMove(state, move)
+			newStateStr := newState.String()
+
+			// TODO: add g(h) for a*
+			if oldValue, ok := stateQueue[newStateStr]; ok {
+				if oldValue > costSoFar+moveCost {
+					stateQueue[newStateStr] = costSoFar + moveCost
+				}
+
+			} else {
+				stateQueue[newStateStr] = costSoFar + moveCost
+			}
+		}
+	}
+	return -1
 }
 
 func solve23(initState State) {
-	shortestPath := searchAllPaths(initState, 0, []Move{})
+	shortestPath := searchBestPath(initState)
 	fmt.Println(shortestPath)
 }
+
 
 func main() {
 	initState := readInput23()
