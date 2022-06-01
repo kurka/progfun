@@ -1,0 +1,486 @@
+inp w
+
+w = B
+x = A+4
+y = A+4
+z = A+4
+
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 12
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -6
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 14
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 15
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 6
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 16
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 1
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 7
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 8
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -5
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 8
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -5
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 3
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -2
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 1
+mul y x
+add z y
+inp w
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -7
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 8
+mul y x
+add z y
+
+| 0        | A          | B        | C        | D        | E        | F        | G        | H        | I        | J        | K        | L        | M        | N        |
+|----------+------------+----------+----------+----------+----------+----------+----------+----------+----------+----------+----------+----------+----------+----------|
+| inp w    | inp w      | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    | inp w    |
+| mul x 0  | mul x 0    | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  | mul x 0  |
+| add x z  | add x z    | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  | add x z  |
+| mod x 26 | mod x 26   | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 | mod x 26 |
+| div z R1 | div z *1*  | div z 1  | div z 1  | div z 26 | div z 1  | div z 1  | div z 26 | div z 1  | div z 1  | div z 26 | div z 26 | div z 26 | div z 26 | div z 26 |
+| add x R2 | add x *12* | add x 11 | add x 14 | add x -6 | add x 15 | add x 12 | add x -9 | add x 14 | add x 14 | add x -5 | add x -9 | add x -5 | add x -2 | add x -7 |
+| eql x w  | eql x w    | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  | eql x w  |
+| eql x 0  | eql x 0    | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  | eql x 0  |
+| mul y 0  | mul y 0    | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  |
+| add y 25 | add y 25   | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 | add y 25 |
+| mul y x  | mul y x    | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  |
+| add y 1  | add y 1    | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  | add y 1  |
+| mul z y  | mul z y    | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  | mul z y  |
+| mul y 0  | mul y 0    | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  | mul y 0  |
+| add y w  | add y w    | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  | add y w  |
+| add y R3 | add y *4*  | add y 10 | add y 12 | add y 14 | add y 6  | add y 16 | add y 1  | add y 7  | add y 8  | add y 11 | add y 8  | add y 3  | add y 1  | add y 8  |
+| mul y x  | mul y x    | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  | mul y x  |
+| add z y  | add z y    | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  | add z y  |
+
+
+04 10 12 14 06 16 01 07 08 11 08 03 01 08
+ D  J  L  N  F  P  A  G  H  K  H  C  A  H
+ E  K
+
+ inp w
+ mul x 0
+ add x z
+ mod x 26
+ div z R1
+ add x R2
+ eql x w
+ eql x 0
+ mul y 0
+ add y 25
+ mul y x
+ add y 1
+ mul z y
+ mul y 0
+ add y w
+ add y R3
+ mul y x
+ add z y
+
+
+ w = A
+ x = T
+ y = (A + R3) * T
+ z = (Z / R1) * ((25 * T) + 1) + ((A + R3) * T)
+
+ T = ((Z % 26) + R2 != A)
+ R1 = 1; 26
+ R2 = varies
+ R3 = varies
+
+ w = A
+ x = R2 != A
+ y = (A + R3) * R2 != A
+ z = (A + R3) * R2 != A
+
+
+ w = A
+ x = T
+ y = (A + R3) * T
+ z = ((Z / R1) * (25 * T + 1)) + ((A + R3) * T)
+
+T = (Z % 26 + R2) != A
+
+
+A = 1..9 => doesn't matter, T is always 0
+Z = 0
+R1 = 1
+R2 = 12
+R3 = 4
+
+B = 1..9 => doesn't matter, T is always 0
+Z = (A + 4)
+R1 = 1
+R2 = 11
+R3 = 10
+
+C = 1..9
+z = 26*(A+4) + (B + 10)
+R1 = 1
+R2 = 14
+R3 = 12
+
+D = 1..9
+z = (26*(26*(A + 4) + (B+10))) + (C + 12)
+R1 = 26
+R2 = -6
+R3 = 14
+
+T == 0 if D = 7,8,9 and C = 1,2,3
+T == 1 if D = 1..6, D = 7, C != 1;  D = 8, C != 2, D = 9, C != 3
+
+
+z = ((Z / R1) * (25 * T + 1)) + ((D + R3) * T)
+T = (C + 6) != D
+
+E = 1..9 =>   T is always 1
+if T_D == 1:
+z = (26*(26*(A+4) + (B + 10))) + (D + 14)
+if T_D == 0:
+z = (26*(A+4) + (B + 10))
+R1 = 1
+R2 = 15
+R3 = 6
+
+
+
+F = 1..9 => T is always 1
+Z_E1 = (26*((26*(26*(A+4) + (B + 10))) + (D + 14))) + (E + 6)
+Z_E2 = (26*(26*(A+4) + (B+10))) + (E+6)
+R1 = 1
+R2 = 12
+R3 = 16
+
+
+
+
+G = 1..9
+z_F1 = (26*((26*((26*(26*A' + B')) + D')) + E')) + F'
+z_F2 = (26*((26*(26*A' + B')) + E')) + F'
+R1 = 26
+R2 = -9
+R3 = 1
+
+
+z_f1:
+t = 1 if G 1..7 or G=8,F1; G=9,F=2
+z_G11 = (26*((26*((26*(26*A' + B')) + D')) + E') + F') + G'
+t = 0 if G = 8,9 and F = 1,2
+z_G12 = 26*((26*(26*A' + B')) + D') + E'
+
+z = ((Z / R1) * (25 * T + 1)) + ((A + R3) * T)
+t = 1 if G 1..7 or G=8,F1; G=9,F=2
+z_G21 = ((26*(26*(26*A' + B')) + E') + F') + G'
+t = 0 if G = 8,9 and F = 1,2
+z_G22 = (26*(26*(26*A' + B')) + E')
+z_F2 = (26*(26*(26*A' + B')) + E') + F'
+
+
+                                 A
+                                 |
+                                 B
+                                 |
+                                 C
+                       /                  \
+                     D1                   D2
+                     |                    |
+                     E1                   E2
+                     |                    |
+                     F1                   F2
+                    /  \                 /  \
+                   G11 G12             G21 G22
+
+
+
+z = ((Z / R1) * (25 * T + 1)) + ((A + R3) * T)
+T = (Z % 26 + R2) != A
+z1 = (26 * Z/R1) + A'
+z0 = (Z / R1)
+
+z = ((Z / R1) * (25 * T + 1)) + ((A + R3) * T)
+T = (Z % 26 + R2) != A
+z1 = (26 * Z/R1) + A'
+z0 = (Z / R1)
+
+z = ((Z / R1) * (25 * T + 1)) + ((A + R3) * T)
+T = (Z % 26 + R2) != A
+z1 = (26 * Z/R1) + A'
+z0 = (Z / R1)
+
+z = ((Z / R1) * (25 * T + 1)) + ((A + R3) * T)
+T = (Z % 26 + R2) != A
+z1 = (26 * Z/R1) + A'
+z0 = (Z / R1)
+
+
+
+
+ 8 <= Z_M <= 16
+
+Z_M = ((Z_L / 26) * (25 * T + 1)) + ((M + 1) * T)
+T = (Z_L % 26 - 2) != M
+z1 = Z_L + M'
+z0 = (Z_L / 26)
+
+
+
+
+--- a new beggining
+
+Z_N = ((Z_M / 26) * (25 * T + 1)) + ((N + 8) * T)
+T = (Z % 26 - 7) != N
+z1 = (26 * Z/26) + N + 8
+z0 = (Z_M / 26)
+
+Z_N = ((Z_M / 26) * (25 * T + 1)) + ((N + 8) * T)
+T = (Z_M % 26 - 7) != N
+z1 = Z_M + N + 8
+z0 = (Z_M / 26)
+
+N == Z_M - 7
+8 <= Z_M <= 16
+
+| N   | 1 | 2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 |
+| Z_M | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 |
+
+Z_M = ((Z_L / 26) * (25 * t + 1)) + ((M + 1) * t)
+t = (Z_L % 26 - 2) != M
+z1 = Z_L + M + 1
+
+M != Z_L - 2
+4 <= Z_L <= 14
+
+| M   | 1 | 2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 |
+| Z_L | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 |
+
+z_L = ((Z_K / 26) * (25 * t + 1)) + ((L + 3) * t)
+t = (Z_K % 26 - 5) != L
+Z_L = Z_K + L + 3
+
+L != Z_K - 5
+0 <= Z_K <= 10
+
+
+z_K = ((z / r1) * (25 * t + 1)) + ((a + r3) * t)
+t = (Z_J % 26 - 5) != a
+z1 = Z_J + K + 8
+z0 = (z / r1)
+
+z = ((z / r1) * (25 * t + 1)) + ((a + r3) * t)
+t = (z % 26 + r2) != a
+z1 = (26 * z/r1) + a'
+z0 = (z / r1)
+
+
+
+
+s0: {0: [-1]}
+s1: {3: [(1,-1)], 4: [(2,-1)], 12: [(3,-1), (4, -1)]}
+s2: {7: [(2,1)]}
+
+9
