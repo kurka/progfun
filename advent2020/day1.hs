@@ -20,7 +20,7 @@ findPairProduct t = repeated . map complementProduct
 solveA :: [Int] -> Int
 solveA xs = case findPairProduct 2020 xs of
   [y] -> y
-  otherwise -> error "no match or multiple matches"
+  _ -> error "no match or multiple matches"
 
 
 -- O(n^2logn) solution
@@ -31,6 +31,7 @@ solveB (x:xs) = case findPairProduct (2020-x) xs of
 solveB [] = error "list not found"
 
 
+main :: IO()
 main = do
   text <- readFile "1.in"
   let ms = readInt <$> lines text

@@ -45,28 +45,19 @@ validateHgt (height, unit) = case unit of
   "in" -> (59 <=> 76) height
   _ -> error "Parser should have prevented this case"
 
-parseAndValidate :: Parser a -> (a -> Bool) -> Parser (Value a)
-parseAndValidate parser validator = try right <|> left
-  where
-    -- this part was copied from somewhere else. I'm still not very familiar with it
-    right = parser >>= \res -> guard (validator res) >> return (Right res)
-    left = Left <$> parseAny
-
 parseEither :: Parser a -> Parser (Value a)
 parseEither rightParser = try (Right <$> rightParser) <|> Left <$> parseAny
 
-
-
 fieldParser :: Parser Field
 fieldParser = choice
-  [ Byr <$> ("byr:" *> parseEither parseNumber),-- (1920 <=> 2002)),
-    Iyr <$> ("iyr:" *> parseEither parseNumber),-- (2010 <=> 2020)),
-    Eyr <$> ("eyr:" *> parseEither parseNumber),-- (2020 <=> 2030)),
-    Hgt <$> ("hgt:" *> parseEither ((,) <$> decimal <*> ("in" <|> "cm"))),-- validateHgt),
-    Hcl <$> ("hcl:" *> parseEither ("#" *> count 6 (satisfy isHexDigit) <* endHere)),-- ((6==) . length)),
-    Ecl <$> ("ecl:" *> parseEither (count 3 (satisfy isAlpha) <* endHere)),-- (\e -> elem e $ words "amb blu brn gry grn hzl oth")),
-    Pid <$> ("pid:" *> parseEither (count 9 (satisfy isDigit) <* endHere)),-- ((9==) . length)),
-    Cid <$> ("cid:" *> parseEither parseAny)-- (const True))
+  [ Byr <$> ("byr:" *> parseEither parseNumber),
+    Iyr <$> ("iyr:" *> parseEither parseNumber),
+    Eyr <$> ("eyr:" *> parseEither parseNumber),
+    Hgt <$> ("hgt:" *> parseEither ((,) <$> decimal <*> ("in" <|> "cm"))),
+    Hcl <$> ("hcl:" *> parseEither ("#" *> count 6 (satisfy isHexDigit) <* endHere)),
+    Ecl <$> ("ecl:" *> parseEither (count 3 (satisfy isAlpha) <* endHere)),
+    Pid <$> ("pid:" *> parseEither (count 9 (satisfy isDigit) <* endHere)),
+    Cid <$> ("cid:" *> parseEither parseAny)
   ]
 
 
@@ -97,7 +88,7 @@ solveB (Right pwds) = length $ filter isValid pwds
       "cm" -> (150 <=> 193) h
       "in" -> (59 <=> 76) h
     isValidField (Hcl (Right _)) = True
-    isValidField (Ecl (Right e)) = elem e ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
+    isValidField (Ecl (Right e)) = e `elem` ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
     isValidField (Pid (Right _)) = True
     isValidField (Cid (Right _)) = True
     isValidField _ = False
